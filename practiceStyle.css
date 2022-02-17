@@ -1,0 +1,50 @@
+* {
+  /* border: 1px solid red; */
+  text-align: center;
+  position: relative;
+  font-size: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+button {
+  margin:auto;
+  display:block;
+}
+
+input[type=text] {
+  width: 80%;
+  height: 65px;
+  line-height: 200px;
+  font-size: 30px;
+  margin:auto;
+  display:block;
+}
+
+ul {
+  padding-left: 0;
+  list-style-position: inside;
+}
+
+#progressBar{
+  background-color: #04AA6D;
+  text-align: center;
+  color: white;
+}
+
+#vowel-explanation{
+  font-size:20px;
+}
+
+bigArabic {
+  font-size:30px;
+  font-family: 'Arial'
+}
+
+#correct{
+  font-size: 45px;
+  font-weight: bold;
+}
+
+#solution{
+  font-size: 40px;
+}

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arabic Verb Conjugation Practice</title>
+    <script src="practiceSource.js"></script>
+    <script src="conjugations.js"></script>
+    <script src="verbs.js"></script>
+    <link rel="stylesheet" href="practiceStyle.css">
+</head>
+<body>
+    <div id="progressBar">
+        <div id="progress"></div>
+    </div>
+    <br>
+
+    <div id="prompt-info">
+        <div id="vowel-explanation">
+            Please vowel each letter in your answer, including letters before long vowels and final letters.
+            <br>
+            Long vowels need not be voweled, except for the silent alef, which should be written as " اْ "
+        </div>
+        <br>
+        <div id="prompt"></div>
+    </div>
+    
+    <br>
+
+    <div id="answer-results">
+        <br>
+        <label for="Answer"></label>
+        <input type="text" name="Answer" id="answer" class="container center"required>
+    </div>
+
+    <div id="submitButton">
+        <br>
+        <button type="submit" id="check" onclick="check()" class="container center">Check</button>
+        <br>
+    </div>
+
+    <div id="correct"></div>
+
+    <p id="solutionText"></p>
+    <p id="solution"></p>
+    <p id="youSaid"></p>
+
+    <div><button onclick="explain()" id="explain">Why?</button><br></div>
+
+    <div style="font-family: 'Arial'" id="explanation"></div>
+
+    <div>
+        <button onclick="next()" id="next">Next</button>
+        <button onclick="override()" id="override">I was right!</button>
+    </div>
+</body>
+</html>

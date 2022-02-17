@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="practiceSettings.js"></script>
+    <script src="conjugations.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="settingsStyle.css">
+    <title>Document</title>
+</head>
+<body>
+    <form action="practice.html" method="GET" id="Settings">
+        <!-- List all the possible verbs to choose from inside a collapsible window -->
+        <button type="button" class="collapsible">Verbs</button>
+            <div class="content">
+                <div class="container">
+                    <div class="center">
+                        <br>
+                        <button type="button" id="toggleVerbs" onclick="selectAll('verbCheck')">Toggle All</button><br><br>
+                        <input type="checkbox" id="0verb" name="0verb" value="0" class="verbCheck">
+                        <label for="0verb" class="verb"></label><br>
+                        <input type="checkbox" id="1verb" name="1verb" value="1" class="verbCheck">
+                        <label for="1verb" class="verb"></label><br>
+                        <input type="checkbox" id="2verb" name="2verb" value="2" class="verbCheck">
+                        <label for="2verb" class="verb"></label>
+                        <br><br>
+                    </div>
+                </div>
+            </div>
+        
+        <br><br><br>
+
+        <!-- Split present tense and past tense into two columns -->
+        <div class="row">
+            <div class="column">
+                <button type="button" class="collapsible">Present Tense</button>
+                <div class="content">
+                    <!-- List all possible pronouns for present tense  -->
+                    <br>
+                    <input type="checkbox" id="posPres" name="posPres" value="1">
+                    <label for="posPres">Affirmative</label><br>
+                    <input type="checkbox" id="negPres" name="negPres" value="1">
+                    <label for="negPres">Negative</label><br><br>
+                    <button type="button" id="selectAllPresent" onclick="selectAll('presentCheck')">Toggle All</button><br>
+                    <div class="row">
+                        <div class="column">
+                            <h4>First Person</h4>
+                        </div>
+                        <div class="columnRight">
+                            <h4><button type="button" id="selectFirstPresent" onclick="selectAll('presentFirst')">Toggle</button></h4>
+                        </div>
+                    </div>
+                    <input type="checkbox" id="0pres" name="0pres" value="0" class="presentCheck presentFirst pronoun">
+                    <label for="0pres" class="present"></label><br>
+                    <input type="checkbox" id="1pres" name="1pres" value="1" class="presentCheck presentFirst pronoun">
+                    <label for="1pres" class="present"></label><br>
+                    <div class="row">
+                        <div class="column">
+                            <h4>Second Person</h4>
+                        </div>
+                        <div class="columnRight">
+                            <h4><button type="button" id="selectSecondPresent" onclick="selectAll('presentSecond')">Toggle</button></h4>
+                        </div>
+                    </div>
+                    <input type="checkbox" id="2pres" name="2pres" value="2" class="presentCheck presentSecond pronoun">
+                    <label for="2pres" class="present"></label><br>
+                    <input type="checkbox" id="3pres" name="3pres" value="3" class="presentCheck presentSecond pronoun">
+                    <label for="3pres" class="present"></label><br>
+                    <input type="checkbox" id="4pres" name="4pres" value="4" class="presentCheck presentSecond pronoun">
+                    <label for="4pres" class="present"></label><br>
+                    <input type="checkbox" id="5pres" name="5pres" value="5" class="presentCheck presentSecond pronoun">
+                    <label for="5pres" class="present"></label><br>
+                    <input type="checkbox" id="6pres" name="6pres" value="6" class="presentCheck presentSecond pronoun">
+                    <label for="6pres" class="present"></label><br>
+                    <input type="checkbox" id="7pres" name="7pres" value="7" class="presentCheck presentSecond pronoun">
+                    <label for="7pres" class="present"></label><br>
+                    <div class="row">
+                        <div class="column">
+                            <h4>Third Person</h4>
+                        </div>
+                        <div class="columnRight">
+                            <h4><button type="button" id="selectThirdPresent" onclick="selectAll('presentThird')">Toggle</button></h4>
+                        </div>
+                    </div>
+                    <input type="checkbox" id="8pres" name="8pres" value="8" class="presentCheck presentThird pronoun">
+                    <label for="8pres" class="present"></label><br>
+                    <input type="checkbox" id="9pres" name="9pres" value="9" class="presentCheck presentThird pronoun">
+                    <label for="9pres" class="present"></label><br>
+                    <input type="checkbox" id="10pres" name="10pres" value="10" class="presentCheck presentThird pronoun">
+                    <label for="10pres" class="present"></label><br>
+                    <input type="checkbox" id="11pres" name="11pres" value="11" class="presentCheck presentThird pronoun">
+                    <label for="11pres" class="present"></label><br>
+                    <input type="checkbox" id="12pres" name="12pres" value="12" class="presentCheck presentThird pronoun">
+                    <label for="12pres" class="present"></label><br>
+                    <input type="checkbox" id="13pres" name="13pres" value="13" class="presentCheck presentThird pronoun">
+                    <label for="13pres" class="present"></label><br><br>
+                </div>
+            </div>
+            <div class="column">
+                <button type="button" class="collapsible">Past Tense</button>
+                <div class="content">
+                    <!-- List all possible pronouns for past tense -->
+                    <br>
+                    <input type="checkbox" id="pos" name="posPast" value="1">
+                    <label for="posPast">Affirmative</label><br>
+                    <input type="checkbox" id="neg" name="negPast" value="1">
+                    <label for="negPast">Nagative (لا)</label><br>
+                    <input type="checkbox" id="neg2" name="negPast2" value="1">
+                    <label for="negPast2">Nagative (ما)</label><br><br>
+                    <button type="button" id="selectAllPast" onclick="selectAll('pastCheck')">Toggle All</button><br>
+                    <div class="row">
+                        <div class="column">
+                            <h4>First Person</h4>
+                        </div>
+                        <div class="columnRight">
+                            <h4><button type="button" id="selectFirstPast" onclick="selectAll('pastFirst')">Toggle</button></h4>
+                        </div>
+                    </div>
+                    <input type="checkbox" id="0past" name="0past" value="28" class="pastCheck pastFirst pronoun">
+                    <label for="0past" class="past"></label><br>
+                    <input type="checkbox" id="1past" name="1past" value="29" class="pastCheck pastFirst pronoun">
+                    <label for="1past" class="past"></label><br>
+                    <div class="row">
+                        <div class="column">
+                            <h4>Second Person</h4>
+                        </div>
+                        <div class="columnRight">
+                            <h4><button type="button" id="selectSecondPast" onclick="selectAll('pastSecond')">Toggle</button></h4>
+                        </div>
+                    </div>
+                    <input type="checkbox" id="2past" name="2past" value="30" class="pastCheck pastSecond pronoun">
+                    <label for="2past" class="past"></label><br>
+                    <input type="checkbox" id="3past" name="3past" value="31" class="pastCheck pastSecond pronoun">
+                    <label for="3past" class="past"></label><br>
+                    <input type="checkbox" id="4past" name="4past" value="32" class="pastCheck pastSecond pronoun">
+                    <label for="4past" class="past"></label><br>
+                    <input type="checkbox" id="5past" name="5past" value="33" class="pastCheck pastSecond pronoun">
+                    <label for="5past" class="past"></label><br>
+                    <input type="checkbox" id="6past" name="6past" value="34" class="pastCheck pastSecond pronoun">
+                    <label for="6past" class="past"></label><br>
+                    <input type="checkbox" id="7past" name="7past" value="35" class="pastCheck pastSecond pronoun">
+                    <label for="7past" class="past"></label><br>
+                    <div class="row">
+                        <div class="column">
+                            <h4>Third Person</h4>
+                        </div>
+                        <div class="columnRight">
+                            <h4><button type="button" id="selectThirdPast" onclick="selectAll('pastThird')">Toggle</button></h4>
+                        </div>
+                    </div>
+                    <input type="checkbox" id="8past" name="8past" value="36" class="pastCheck pastThird pronoun">
+                    <label for="8past" class="past"></label><br>
+                    <input type="checkbox" id="9past" name="9past" value="37" class="pastCheck pastThird pronoun">
+                    <label for="9past" class="past"></label><br>
+                    <input type="checkbox" id="10past" name="10past" value="38" class="pastCheck pastThird pronoun">
+                    <label for="10past" class="past"></label><br>
+                    <input type="checkbox" id="11past" name="11past" value="39" class="pastCheck pastThird pronoun">
+                    <label for="11past" class="past"></label><br>
+                    <input type="checkbox" id="12past" name="12past" value="40" class="pastCheck pastThird pronoun">
+                    <label for="12past" class="past"></label><br>
+                    <input type="checkbox" id="13past" name="13past" value="41" class="pastCheck pastThird pronoun">
+                    <label for="13past" class="past"></label><br><br>
+                </div>
+            </div>
+        </div>
+        <br><br>
+
+        <div class="container">
+            <div class="center">
+                <input type="radio" name="endless?" id="endless" value="endless" class="mode">
+                <label for="endless">Endless Mode</label><br>
+
+                <input type="radio" name="endless?" id="notEndless" value="notEndless" class="mode">
+                <label for="notEndless">One of each</label>
+
+                <br><br>
+        
+                <button type="submit" id="SubmitButton">On to practicing!</button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>
