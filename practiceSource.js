@@ -17,8 +17,12 @@ let oneOfEachDict = {};
 let currentVerbPronoun;
 /** The total number of verb/pronoun objects at the start of reviewing */
 let totalVerbPronoun;
+/** the number of questions the user has gotten correct in endless mode */
+let totalCorrect;
 
 window.onload = function(){
+    totalCorrect = 0;
+
     //gets all variables from the url
     parameters = new URLSearchParams(window.location.search);
 
@@ -185,6 +189,7 @@ function check(){
     }
 
     if(gradeAnswer(answerText, correctAnswer)){
+        totalCorrect++;
         document.getElementById("correct").style.color = "Green";
         document.getElementById("correct").innerHTML = "Correct!";
     }else{
@@ -281,46 +286,46 @@ function explain(){
             explanation += `Recall the past tense stem is formed in the following pattern: <bigArabic>◌◌َ◌َ</bigArabic>, 
             thus the past tense stem of <bigArabic>${workingVerb.printRoots()}</bigArabic> is <bigArabic>${workingVerb.pastTenseStem + workingVerb.roots[2]}</bigArabic>. The ${conjugationsNoBullets[workingTense]} form takes the suffix:`;
             switch(workingTense){
-                case 14:
+                case 28:
                     explanation += `<bigArabic>${"تُ◌ْ◌◌"}</bigArabic>. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.ssp}</bigArabic>.`;
                     break;
-                case 15:
+                case 29:
                     explanation += `<bigArabic>${"نَا◌ْ◌◌"}</bigArabic>. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.spp}</bigArabic>.`;
                     break;
-                case 16:
+                case 30:
                     explanation += `<bigArabic>${"تَ◌ْ◌◌"}</bigArabic>. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.nmsp}</bigArabic>.`;
                     break;
-                case 17:
+                case 31:
                     explanation += `<bigArabic>${"تُمَا◌ْ◌◌"}</bigArabic>. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.nmdp}</bigArabic>.`;
                     break;
-                case 18:
+                case 32:
                     explanation += `<bigArabic>${"تُمْ◌ْ◌◌"}</bigArabic>. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.nmpp}</bigArabic>.`;
                     break;
-                case 19:
+                case 33:
                     explanation += `<bigArabic>${"تِ◌ْ◌◌"}</bigArabic>. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.nfsp}</bigArabic>.`;
                     break;
-                case 20:
+                case 34:
                     explanation += `<bigArabic>${"تُمَا◌ْ◌◌"}</bigArabic>. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.nfdp}</bigArabic>.`;
                     break;
-                case 21:
+                case 35:
                     explanation += `<bigArabic>${"تُنَّ◌ْ◌◌"}</bigArabic>. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.nfpp}</bigArabic>.`;
                     break;
-                case 22:
+                case 36:
                     explanation += `<bigArabic>${"◌َ◌◌"}</bigArabic>. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.rmsp}</bigArabic>.`;
                     break;
-                case 23:
+                case 37:
                     explanation += `<bigArabic>${"ا◌َ◌◌"}</bigArabic>. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.rmdp}</bigArabic>.`;
                     break;
-                case 24:
+                case 38:
                     explanation += `<bigArabic>${"واْ◌ُ◌◌"}</bigArabic>. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.rmpp}</bigArabic>.`;
                     break;
-                case 25:
+                case 39:
                     explanation += `<bigArabic>${"تْ◌ْ◌◌"}</bigArabic>. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.rfsp}</bigArabic>.`;
                     break;
-                case 26:
+                case 40:
                     explanation += `<bigArabic>${"تَا◌َ◌◌"}</bigArabic>. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.rfdp}</bigArabic>.`;
                     break;
-                case 27:
+                case 41:
                     explanation += `<bigArabic>${"نَ◌ْ◌◌"}</bigArabic>. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.rfpp}</bigArabic>.`;
                     break;
             }
@@ -367,6 +372,7 @@ function override(){
 /** shuffles current verb and current tense, turns off explanation and solution */
 function next(){
     if(getParameter("endless?") == "endless"){
+        document.getElementById("numCorrect").innerHTML = "Number correct: " + totalCorrect + "<br>";
         //disallow duplicates in a row unless there is a single verb and tense selected
         let tempNewVerb = Math.floor(Math.random() * verbs.length);
         let tempNewTense = parseInt(tenses[Math.floor(Math.random() * tenses.length)]);
