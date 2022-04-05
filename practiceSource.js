@@ -1,20 +1,13 @@
-/** array of all tenses chosen by user, list of integers, indices of conjugations */
-let tenses = [];
+/** stores each verb object and pronoun, used for both one of each and endless mode.
+ *  data is stored in the form {[verb: verbObject, tenses: [index]]}
+ */
+let verbPronounObject = []
 /** integer, current index of tenses */
 let currentTense;
-/** array of all verbs chosen by the user, list of integers, indices of allVerbs */
-let verbs = [];
 /** integer, current index of verbs */
 let currentVerb;
 /** object of parameter passed in from practiceSettings.html */
 let parameters;
-/** When the user selects the one of each setting, this dictionary is populated with all the
- * possible pronoun-verb pairs, then popped one by one as they review.
- * This is a nested dictionary, with the structure {index: {verb: "x x x", pronoun: "____"}}
- */
-let oneOfEachDict = {};
-/** The index of the current verb/pronoun pair chosen from oneOfEachDict */
-let currentVerbPronoun;
 /** The total number of verb/pronoun objects at the start of reviewing */
 let totalVerbPronoun;
 /** the number of questions the user has gotten correct in endless mode */
@@ -26,54 +19,28 @@ window.onload = function(){
     //gets all variables from the url
     parameters = new URLSearchParams(window.location.search);
 
-    if(getParameter("endless?") == "endless"){
-        //sees which verbs have been selected and pushes them to the working array
-        for(let i = 0; i < Object.keys(allVerbs).length; i++){
-            if(getParameter(i.toString() + "verb")){
-                verbs.push(new Verb(allVerbs[i]["roots"].split(" "), allVerbs[i]["middle"], allVerbs[i]["regular"]));
-            }
+    let pronouns = [];
+    for(let i = 0; i < 14; i++){
+        let temp = getParameter(i.toString() + "pres");
+        if(temp){
+            pronouns.push(temp);
         }
-
-        //pushes selected present tense pronouns to tenses
-        for(let i = 0; i < 14; i++){
-            let temp = getParameter(i.toString() + "pres");
-            if(temp){
-                tenses.push(temp);
-            }
-        }
-
-        //pushes selected past tense pronouns to tenses
-        for(let i = 0; i < 14; i++){
-            let temp = getParameter(i.toString() + "past");
-            if(temp){
-                tenses.push(temp);
-            }
-        }
-    }else if(getParameter("endless?") == "notEndless"){
-        for(let i = 0; i < Object.keys(allVerbs).length; i++){
-            if(getParameter(i.toString() + "verb")){
-                for(let j = 0; j <= 13; j++){
-                    let temp = getParameter(j.toString() + "pres");
-                    if(temp){
-                        let tempObj = {};
-                        tempObj["verb"] = new Verb(allVerbs[i]["roots"].split(" "), allVerbs[i]["middle"], allVerbs[i]["regular"]);
-                        tempObj["pronoun"] = temp;
-                        oneOfEachDict[Object.keys(oneOfEachDict).length] = tempObj;
-                    }
-                }
-                for(let j = 28; j <= 41; j++){
-                    let temp = getParameter((j - 28).toString() + "past");
-                    if(temp){
-                        let tempObj = {};
-                        tempObj["verb"] = new Verb(allVerbs[i]["roots"].split(" "), allVerbs[i]["middle"], allVerbs[i]["regular"]);
-                        tempObj["pronoun"] = temp;
-                        oneOfEachDict[Object.keys(oneOfEachDict).length] = tempObj;
-                    }
-                }
-            }
-        }
-        totalVerbPronoun = Object.keys(oneOfEachDict).length;
     }
+
+    for(let i = 0; i < 14; i++){
+        let temp = getParameter(i.toString() + "past");
+        if(temp){
+            pronouns.push(temp);
+        }
+    }
+
+    for(let i = 0; i < Object.keys(allVerbs).length; i++){
+        if(getParameter(i.toString() + "verb")){
+            verbPronounObject.push({"verb": new Verb(allVerbs[i]["roots"].split(" "), allVerbs[i]["middle"], allVerbs[i]["regular"]), "pronouns": pronouns})
+        }
+    }
+
+    totalVerbPronoun = verbPronounObject.length * verbPronounObject[0]["pronouns"].length;
     
     //initializes the window for testing
     next();
@@ -91,15 +58,8 @@ function check(){
     let correctAnswer = "";
 
     //use this to avoid an if statement in each switch statement
-    let workingTense;
-    let workingVerb;
-    if(getParameter("endless?") == "endless"){
-        workingTense = currentTense;
-        workingVerb = verbs[currentVerb];
-    }else if(getParameter("endless?") == "notEndless"){
-        workingTense = parseInt(oneOfEachDict[Object.keys(oneOfEachDict)[currentVerbPronoun]]["pronoun"]);
-        workingVerb = oneOfEachDict[Object.keys(oneOfEachDict)[currentVerbPronoun]]["verb"];
-    }
+    let workingTense = currentTense;
+    let workingVerb = verbPronounObject[currentVerb]["verb"];
 
     switch(workingTense){
         case 0:
@@ -221,15 +181,8 @@ function explain(){
     let explanation = "<br>"
 
     //use this to avoid an if statement in each switch statement
-    let workingTense;
-    let workingVerb;
-    if(getParameter("endless?") == "endless"){
-        workingTense = currentTense;
-        workingVerb = verbs[currentVerb];
-    }else if(getParameter("endless?") == "notEndless"){
-        workingTense = parseInt(oneOfEachDict[Object.keys(oneOfEachDict)[currentVerbPronoun]]["pronoun"]);
-        workingVerb = oneOfEachDict[Object.keys(oneOfEachDict)[currentVerbPronoun]]["verb"];
-    }
+    let workingTense = currentTense;
+    let workingVerb = verbPronounObject[currentVerb]["verb"];
 
     if(workingTense >= 0 && workingTense <= 13){
         if(workingVerb.isRegular){
@@ -320,7 +273,7 @@ function explain(){
                     explanation += `<bigArabic>${"واْ◌ُ◌◌"}</bigArabic>. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.rmpp}</bigArabic>.`;
                     break;
                 case 39:
-                    explanation += `<bigArabic>${"تْ◌ْ◌◌"}</bigArabic>. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.rfsp}</bigArabic>.`;
+                    explanation += `<bigArabic>${"تْ◌َ◌◌"}</bigArabic>. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.rfsp}</bigArabic>.`;
                     break;
                 case 40:
                     explanation += `<bigArabic>${"تَا◌َ◌◌"}</bigArabic>. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.rfdp}</bigArabic>.`;
@@ -365,56 +318,55 @@ function gradeAnswer(userAnswer, correctAnswer){
 
 /** overrides the system telling the user they were incorrect */
 function override(){
-    delete oneOfEachDict[Object.keys(oneOfEachDict)[currentVerbPronoun]];
+    verbPronounObject[currentVerb]["pronouns"].splice(verbPronounObject[currentVerb]["pronouns"].indexOf(currentTense.toString()), 1);
+    if(verbPronounObject[currentVerb]["pronouns"].length == 0){
+        verbPronounObject.splice(currentVerb, 1);
+    }
     next();
 }
 
 /** shuffles current verb and current tense, turns off explanation and solution */
 function next(){
+
     if(getParameter("endless?") == "endless"){
         document.getElementById("numCorrect").innerHTML = "Number correct: " + totalCorrect + "<br>";
-        //disallow duplicates in a row unless there is a single verb and tense selected
-        let tempNewVerb = Math.floor(Math.random() * verbs.length);
-        let tempNewTense = parseInt(tenses[Math.floor(Math.random() * tenses.length)]);
-        while(tempNewVerb == currentVerb && tempNewTense == currentTense && (verbs.length > 1 || tenses.length > 1)){
-            console.log("re shuffle");
-            tempNewVerb = Math.floor(Math.random() * verbs.length);
-            tempNewTense = parseInt(tenses[Math.floor(Math.random() * tenses.length)]);
-        }
-        currentVerb = tempNewVerb;
-        currentTense = tempNewTense;
-
-        document.getElementById("answer").placeholder = verbs[currentVerb].printRoots();
-        document.getElementById("prompt").innerHTML = "Conjugate " + verbs[currentVerb].printRoots() + " in the following tense:" + conjugations[tenses.indexOf(currentTense.toString())];
     }else if(getParameter("endless?") == "notEndless"){
         //next() is used to initialize the window, this seems like the most effective way to stop
         //the program from trying to delete a tense that has not been tested yet
         try{
             if(document.getElementById("correct").innerHTML == "Correct!"){
-                delete oneOfEachDict[Object.keys(oneOfEachDict)[currentVerbPronoun]];
+                verbPronounObject[currentVerb]["pronouns"].splice(verbPronounObject[currentVerb]["pronouns"].indexOf(currentTense.toString()), 1);
+                if(verbPronounObject[currentVerb]["pronouns"].length == 0){
+                    verbPronounObject.splice(currentVerb, 1);
+                }
             }
         }catch (err){
             console.log("error");
         }
 
-        if(Object.keys(oneOfEachDict).length == 0){
+        if(verbPronounObject.length == 0){
             console.log("finished");
             window.location.href = "finished.html"
             return;
         }
 
-        let tempCurrentVerbPronoun = Math.floor(Math.random() * Object.keys(oneOfEachDict).length);
-        while(currentVerbPronoun == tempCurrentVerbPronoun && Object.keys(oneOfEachDict).length > 1){
-            console.log("re shuffle");
-            tempCurrentVerbPronoun = Math.floor(Math.random() * Object.keys(oneOfEachDict).length);
-        }
-        currentVerbPronoun = tempCurrentVerbPronoun;
-        document.getElementById("answer").placeholder = oneOfEachDict[Object.keys(oneOfEachDict)[currentVerbPronoun]]["verb"].printRoots();
-        document.getElementById("prompt").innerHTML = "Conjugate " + oneOfEachDict[Object.keys(oneOfEachDict)[currentVerbPronoun]]["verb"].printRoots() + " in the following tense:" + conjugations[oneOfEachDict[Object.keys(oneOfEachDict)[currentVerbPronoun]]["pronoun"]];
-        // document.getElementById("progress").innerHTML = (1 + totalVerbPronoun - Object.keys(oneOfEachDict).length).toString() + "/" + totalVerbPronoun.toString();
-
         move();
     }
+
+    let tempNewVerb = Math.floor(Math.random() * verbPronounObject.length);
+    let tempNewTense = parseInt(verbPronounObject[tempNewVerb]["pronouns"][Math.floor(Math.random() * verbPronounObject[tempNewVerb]["pronouns"].length)]);
+    // disallow duplicates unless there is only one verb-pronoun pair remaining
+    while(tempNewVerb == currentVerb && tempNewTense == currentTense && (verbPronounObject.length > 1 || verbPronounObject[currentVerb]["pronouns"].length > 1)){
+        console.log("re shuffle");
+        tempNewVerb = Math.floor(Math.random() * verbPronounObject.length);
+        tempNewTense = parseInt(verbPronounObject[tempNewVerb]["pronouns"][Math.floor(Math.random() * verbPronounObject[tempNewVerb]["pronouns"].length)]);
+    }
+    currentVerb = tempNewVerb;
+    currentTense = tempNewTense;
+
+    document.getElementById("answer").placeholder = verbPronounObject[currentVerb]["verb"].printRoots();
+    document.getElementById("prompt").innerHTML = "Conjugate " + verbPronounObject[currentVerb]["verb"].printRoots() + " in the following tense:" + conjugations[currentTense];
+
 
     document.getElementById("correct").style.display = "none";
 
@@ -460,8 +412,8 @@ function move() {
         i = 0;
       } else {
         width++;
-        elem.style.width = ((totalVerbPronoun - Object.keys(oneOfEachDict).length + 1) / totalVerbPronoun) * 100 + "%";
-        elem.innerHTML = (totalVerbPronoun - Object.keys(oneOfEachDict).length + 1) + "/" + totalVerbPronoun;
+        elem.style.width = (totalCorrect / totalVerbPronoun) * 100 + "%";
+        elem.innerHTML = totalCorrect + "/" + totalVerbPronoun;
       }
     }
   }

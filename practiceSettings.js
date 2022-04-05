@@ -1,10 +1,25 @@
 let verb = [], pronoun = [], mode = false;
 
 window.onload = function(){
+    let container = document.getElementById("center");
+    for(let i = 0; i < Object.keys(allVerbs).length; i++){
+        let tempCheck = container.appendChild(document.createElement(`input`));
+        tempCheck.type = "checkbox"
+        tempCheck.id = i + "verb";
+        tempCheck.name = i + "verb";
+        tempCheck.value = i + "";
+        tempCheck.className = "verbCheck";
+        let tempLabel = container.appendChild(document.createElement(`label`));
+        tempLabel.htmlFor = i + "verb";
+        tempLabel.className = "verb";
+        container.appendChild(document.createElement(`br`));
+    }
+    container.appendChild(document.createElement(`br`));
+
     //Populate the verb labels to the checkboxes with allVerbs 0...x
     let verbLabels = document.getElementsByClassName("verb");
     for(let i = 0; i < verbLabels.length; i++){
-        verbLabels[i].innerHTML = allVerbs[i]["roots"];
+        verbLabels[i].innerHTML = " " + allVerbs[i]["roots"];
     }
 
     //Populate the present tense labels to the checkboxes with each pronoun

@@ -1,7 +1,9 @@
 let allVerbs = {
     0: {roots: "ف ع ل", middle: "َ", regular: true},
     1: {roots: "ك ت ب", middle: "ُ", regular: true},
-    2: {roots: "ج ل س", middle: "ِ", regular: true}
+    2: {roots: "ج ل س", middle: "ِ", regular: true},
+    3: {roots: "خ ر ج", middle: "َ", regular: true},
+    4: {roots: "ح ص ل", middle: "َ", regular: true}
 }
 
 let conjugations = {
