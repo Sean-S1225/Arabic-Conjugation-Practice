@@ -18,6 +18,7 @@ input[type=text] {
   font-size: 30px;
   margin:auto;
   display:block;
+  margin: 5%;
 }
 
 ul {
@@ -47,4 +48,11 @@ bigArabic {
 
 #solution{
   font-size: 40px;
+}
+
+.typeAnswer{
+  display: flex;
+  flex-flow: row;
+  line-height: 500%;
+  font-size: 30px;  
 }

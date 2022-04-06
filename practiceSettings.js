@@ -1,6 +1,14 @@
-let verb = [], pronoun = [], mode = false;
+/** a list of all selected verbs */
+let verb = [];
+/** a list of all selected pronouns */
+let pronoun = [];
+/** has a mode been chosen? */
+let mode = false;
+/** has a pronoun style been chosen? */
+let pronounStyle = false;
 
 window.onload = function(){
+    //Automatically create checkboxes and labels for each verb in allVerbs
     let container = document.getElementById("center");
     for(let i = 0; i < Object.keys(allVerbs).length; i++){
         let tempCheck = container.appendChild(document.createElement(`input`));
@@ -102,13 +110,19 @@ window.onload = function(){
     //different study modes
     let modes = document.getElementsByClassName("mode");
     for(let i = 0; i < modes.length; i++){
-        modes[i].addEventListener("click", event => {mode = !mode;});
+        modes[i].addEventListener("click", event => {if(!mode){mode = true}});
     }
 
-    //If at least one verb, one pronoun, and one mode have been selected, begin studying
+    //different pronoun styles
+    let pronounStyles = document.getElementsByClassName("pronounStyle");
+    for(let i = 0; i < pronounStyles.length; i++){
+        pronounStyles[i].addEventListener("click", event => {if(!pronounStyle){pronounStyle = true}});
+    }
+
+    //If at least one verb, one pronoun, and one mode and pronoun style have been selected, begin studying
     let settings = document.getElementById("Settings");
     settings.addEventListener('submit', event => {
-        if(verb.length == 0 || pronoun.length == 0 || !mode){
+        if(verb.length == 0 || pronoun.length == 0 || !mode || !pronounStyle){
             event.preventDefault();
             console.log('Form submission cancelled.');
         }

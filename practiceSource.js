@@ -173,6 +173,8 @@ function check(){
 
     document.getElementById("answer").style.display = "none";
     document.getElementById("submitButton").style.display = "none";
+
+    document.getElementById("arabicpronoun").innerHTML = "";
 }
 
 /** prints an explanation to screen as to why a verb conjugation is the way it is  */
@@ -364,8 +366,42 @@ function next(){
     currentVerb = tempNewVerb;
     currentTense = tempNewTense;
 
+    document.getElementById("prompt").innerHTML = "";
+    document.getElementById("arabicpronoun").innerHTML = "";
+
     document.getElementById("answer").placeholder = verbPronounObject[currentVerb]["verb"].printRoots();
-    document.getElementById("prompt").innerHTML = "Conjugate " + verbPronounObject[currentVerb]["verb"].printRoots() + " in the following tense:" + conjugations[currentTense];
+    let pronounStyle = getParameter("pronounMode");
+    switch(pronounStyle){
+        case "desc":
+            document.getElementById("prompt").innerHTML = "Conjugate " + verbPronounObject[currentVerb]["verb"].printRoots() + " in the following tense:" + conjugations[currentTense];
+            break;
+        case "arabic":
+            document.getElementById("prompt").innerHTML = "Conjugate " + verbPronounObject[currentVerb]["verb"].printRoots() + " in the "
+            if(currentTense <= 13){
+                document.getElementById("prompt").innerHTML += "present tense"
+            }else if(currentTense <= 41){
+                document.getElementById("prompt").innerHTML += "past tense"
+            }
+            document.getElementById("arabicpronoun").innerHTML = arabicPronouns[currentTense % 14];
+            break;
+        case "both":
+            document.getElementById("prompt").innerHTML = "Conjugate " + verbPronounObject[currentVerb]["verb"].printRoots() + " in the following tense:" + conjugations[currentTense];
+            document.getElementById("arabicpronoun").innerHTML = arabicPronouns[currentTense % 14];
+            break;
+        case "mixed":
+            if(Math.floor(Math.random() * 2) > 0){
+                document.getElementById("prompt").innerHTML = "Conjugate " + verbPronounObject[currentVerb]["verb"].printRoots() + " in the following tense:" + conjugations[currentTense];
+            }else{
+                document.getElementById("prompt").innerHTML = "Conjugate " + verbPronounObject[currentVerb]["verb"].printRoots() + " in the "
+                if(currentTense <= 13){
+                    document.getElementById("prompt").innerHTML += "present tense"
+                }else if(currentTense <= 41){
+                    document.getElementById("prompt").innerHTML += "past tense"
+                }
+                document.getElementById("arabicpronoun").innerHTML = arabicPronouns[currentTense % 14];
+            }
+            break;
+    }
 
 
     document.getElementById("correct").style.display = "none";

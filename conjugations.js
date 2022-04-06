@@ -2,8 +2,8 @@ let allVerbs = {
     0: {roots: "ف ع ل", middle: "َ", regular: true},
     1: {roots: "ك ت ب", middle: "ُ", regular: true},
     2: {roots: "ج ل س", middle: "ِ", regular: true},
-    3: {roots: "خ ر ج", middle: "َ", regular: true},
-    4: {roots: "ح ص ل", middle: "َ", regular: true}
+    3: {roots: "خ ر ج", middle: "ُ", regular: true},
+    4: {roots: "ح ص ل", middle: "ُ", regular: true}
 }
 
 let conjugations = {
@@ -90,3 +90,20 @@ let conjugationsNoBullets = {
     40: 'Third Person Feminine Dual (They, F, 2) Past',
     41: 'Third Person Feminine Plural (They, F, 3+) Past'
 };
+
+let arabicPronouns = {
+    0: "أَنَا",
+    1: "نَحْنُ",
+    2: "أَنْتَ",
+    3: "أَنْتُمَا (m)",
+    4: "أَنْتُمْ",
+    5: "أنْتِ",
+    6: "أَنْتَُمَا (f)",
+    7: "أَنْتُنَّ",
+    8: "هُوَ",
+    9: "هُمَا (m)",
+    10: "هُمَ",
+    11: "هِيَ",
+    12: "هُمَا (f)",
+    13: "هُنَّ"
+}
