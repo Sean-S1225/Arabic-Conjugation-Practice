@@ -14,6 +14,38 @@ let totalVerbPronoun;
 let totalCorrect;
 /** either 0 or 1, determines if the pronoun displayed will be a linguistic description or the arabic pronoun. 0 is arabic, 1 is linguistic */
 let arabicLinguisticPronounRandom;
+/** a dictionary storing various different patterns depending on the tense */
+patternDictionary = new Map([
+    [0, "◌ُ◌◌أَ"],
+    [1, "◌ُ◌◌نَ"],
+    [2, "◌ُ◌◌تَ"],
+    [3, "تَ◌◌◌َانِ"],
+    [4, "تَ◌◌◌ُونَ"],
+    [5, "تَ◌◌◌ِينَ"],
+    [6, "تَ◌◌◌َانِ"],
+    [7, "تَ◌◌◌ْنَ"],
+    [8, "◌ُ◌◌يَ"],
+    [9, "يَ◌◌◌َانِ"],
+    [10, "يَ◌◌◌ُونَ"],
+    [11, "◌ُ◌◌تَ"],
+    [12, "تَ◌◌◌َانِ"],
+    [13, "يَ◌◌◌ْنَ"],
+
+    [28, "تُ◌ْ◌◌"],
+    [29, "نَا◌ْ◌◌"],
+    [30, "تَ◌ْ◌◌"],
+    [31, "تُمَا◌ْ◌◌"],
+    [32, "تُمْ◌ْ◌◌"],
+    [33, "تِ◌ْ◌◌"],
+    [34, "تُمَا◌ْ◌◌"],
+    [35, "تُنَّ◌ْ◌◌"],
+    [36, "◌َ◌◌"],
+    [37, "ا◌َ◌◌"],
+    [38, "واْ◌ُ◌◌"],
+    [39, "تْ◌َ◌◌"],
+    [40, "تَا◌َ◌◌"],
+    [41, "نَ◌ْ◌◌"],
+]);
 
 window.onload = function(){
     totalCorrect = 0;
@@ -65,99 +97,13 @@ function check(){
     let answer = document.getElementById("answer");
     let answerText = answer.value;
 
-    let correctAnswer = "";
-
     //use this to avoid an if statement in each switch statement
     let workingTense = currentTense;
     let workingVerb = verbPronounObject[currentVerb]["verb"];
 
-    switch(workingTense){
-        case 0:
-            correctAnswer = workingVerb.ssi;
-            break;
-        case 1:
-            correctAnswer = workingVerb.spi;
-            break;
-        case 2:
-            correctAnswer = workingVerb.nmsi;
-            break;
-        case 3:
-            correctAnswer = workingVerb.nmdi;
-            break;
-        case 4:
-            correctAnswer = workingVerb.nmpi;
-            break;
-        case 5:
-            correctAnswer = workingVerb.nfsi;
-            break;
-        case 6:
-            correctAnswer = workingVerb.nfdi;
-            break;
-        case 7:
-            correctAnswer = workingVerb.nfpi;
-            break;
-        case 8:
-            correctAnswer = workingVerb.rmsi;
-            break;
-        case 9:
-            correctAnswer = workingVerb.rmdi;
-            break;
-        case 10:
-            correctAnswer = workingVerb.rmpi;
-            break;
-        case 11:
-            correctAnswer = workingVerb.rfsi;
-            break;
-        case 12:
-            correctAnswer = workingVerb.rfdi;
-            break;
-        case 13:
-            correctAnswer = workingVerb.rfpi;
-            break;
-        case 28:
-            correctAnswer = workingVerb.ssp;
-            break;
-        case 29:
-            correctAnswer = workingVerb.spp;
-            break;
-        case 30:
-            correctAnswer = workingVerb.nmsp;
-            break;
-        case 31:
-            correctAnswer = workingVerb.nmdp;
-            break;
-        case 32:
-            correctAnswer = workingVerb.nmpp;
-            break;
-        case 33:
-            correctAnswer = workingVerb.nfsp;
-            break;
-        case 34:
-            correctAnswer = workingVerb.nfdp;
-            break;
-        case 35:
-            correctAnswer = workingVerb.nfpp;
-            break;
-        case 36:
-            correctAnswer = workingVerb.rmsp;
-            break;
-        case 37:
-            correctAnswer = workingVerb.rmdp;
-            break;
-        case 38:
-            correctAnswer = workingVerb.rmpp;
-            break;
-        case 39:
-            correctAnswer = workingVerb.rfsp;
-            break;
-        case 40:
-            correctAnswer = workingVerb.rfdp;
-            break;
-        case 41:
-            correctAnswer = workingVerb.rfpp;
-            break;
-    }
+    let correctAnswer = workingVerb.verbDictionary.get(workingTense);
 
+    // if(gradeAnswer(answerText, correctAnswer)){
     if(gradeAnswer(answerText, correctAnswer)){
         totalCorrect++;
         document.getElementById("correct").style.color = "Green";
@@ -211,105 +157,19 @@ function explain(){
         if(workingVerb.isRegular){
             explanation += `Recall the present tense stem is formed with the following pattern: <bigArabic>◌◌◌ْ</bigArabic>. 
             The middle vowel is <bigArabic>${"◌" + workingVerb.middleVowel}</bigArabic>, thus the present tense stem of <bigArabic>${workingVerb.printRoots()}</bigArabic> is <bigArabic>${workingVerb.presentTenseStem}</bigArabic>. 
-            The ${conjugationsNoBullets[workingTense]} form takes the prefix/suffix: `
-            switch(workingTense){
-                case 0:
-                    explanation += `${"<bigArabic>◌ُ◌◌أَ</bigArabic>"}. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.ssi}</bigArabic>.`;
-                    break;
-                case 1:
-                    explanation += `${"<bigArabic>◌ُ◌◌نَ</bigArabic>"}. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.spi}</bigArabic>.`;
-                    break;
-                case 2:
-                    explanation += `${"<bigArabic>◌ُ◌◌تَ</bigArabic>"}. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.nmsi}</bigArabic>.`;
-                    break;
-                case 3:
-                    explanation += `${"<bigArabic>تَ◌◌◌َانِ</bigArabic>"}. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.nmdi}</bigArabic>.`;
-                    break;
-                case 4:
-                    explanation += `${"<bigArabic>تَ◌◌◌ُونَ</bigArabic>"}. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.nmpi}</bigArabic>.`;
-                    break;
-                case 5:
-                    explanation += `${"<bigArabic>تَ◌◌◌ِينَ</bigArabic>"}. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.nfsi}</bigArabic>.`;
-                    break;
-                case 6:
-                    explanation += `${"<bigArabic>تَ◌◌◌َانِ</bigArabic>"}. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.nfdi}</bigArabic>.`;
-                    break;
-                case 7:
-                    explanation += `${"<bigArabic>تَ◌◌◌ْنَ</bigArabic>"}. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.nfpi}</bigArabic>.`;
-                    break;
-                case 8:
-                    explanation += `${"<bigArabic>◌ُ◌◌يَ</bigArabic>"}. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.rmsi}</bigArabic>.`;
-                    break;
-                case 9:
-                    explanation += `${"<bigArabic>يَ◌◌◌َانِ</bigArabic>"}. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.rmdi}</bigArabic>.`;
-                    break;
-                case 10:
-                    explanation += `${"<bigArabic>يَ◌◌◌ُونَ</bigArabic>"}. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.rmpi}</bigArabic>.`;
-                    break;
-                case 11:
-                    explanation += `${"<bigArabic>◌ُ◌◌تَ</bigArabic>"}. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.rfsi}</bigArabic>.`;
-                    break;
-                case 12:
-                    explanation += `${"<bigArabic>تَ◌◌◌َانِ</bigArabic>"}. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.rfdi}</bigArabic>.`;
-                    break;
-                case 13:
-                    explanation += `${"<bigArabic>يَ◌◌◌ْنَ</bigArabic>"}. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.rfpi}</bigArabic>.`;
-                    break;
-            }
+            The ${conjugationsNoBullets[workingTense]} form takes the prefix/suffix: <bigArabic>${patternDictionary.get(currentTense)}</bigArabic>. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.verbDictionary.get(currentTense)}</bigArabic>.`;
         }
     }else{
         if(workingVerb.isRegular){
             explanation += `Recall the past tense stem is formed in the following pattern: <bigArabic>◌◌َ◌َ</bigArabic>, 
-            thus the past tense stem of <bigArabic>${workingVerb.printRoots()}</bigArabic> is <bigArabic>${workingVerb.pastTenseStem + workingVerb.roots[2]}</bigArabic>. The ${conjugationsNoBullets[workingTense]} form takes the suffix:`;
-            switch(workingTense){
-                case 28:
-                    explanation += `<bigArabic>${"تُ◌ْ◌◌"}</bigArabic>. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.ssp}</bigArabic>.`;
-                    break;
-                case 29:
-                    explanation += `<bigArabic>${"نَا◌ْ◌◌"}</bigArabic>. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.spp}</bigArabic>.`;
-                    break;
-                case 30:
-                    explanation += `<bigArabic>${"تَ◌ْ◌◌"}</bigArabic>. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.nmsp}</bigArabic>.`;
-                    break;
-                case 31:
-                    explanation += `<bigArabic>${"تُمَا◌ْ◌◌"}</bigArabic>. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.nmdp}</bigArabic>.`;
-                    break;
-                case 32:
-                    explanation += `<bigArabic>${"تُمْ◌ْ◌◌"}</bigArabic>. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.nmpp}</bigArabic>.`;
-                    break;
-                case 33:
-                    explanation += `<bigArabic>${"تِ◌ْ◌◌"}</bigArabic>. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.nfsp}</bigArabic>.`;
-                    break;
-                case 34:
-                    explanation += `<bigArabic>${"تُمَا◌ْ◌◌"}</bigArabic>. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.nfdp}</bigArabic>.`;
-                    break;
-                case 35:
-                    explanation += `<bigArabic>${"تُنَّ◌ْ◌◌"}</bigArabic>. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.nfpp}</bigArabic>.`;
-                    break;
-                case 36:
-                    explanation += `<bigArabic>${"◌َ◌◌"}</bigArabic>. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.rmsp}</bigArabic>.`;
-                    break;
-                case 37:
-                    explanation += `<bigArabic>${"ا◌َ◌◌"}</bigArabic>. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.rmdp}</bigArabic>.`;
-                    break;
-                case 38:
-                    explanation += `<bigArabic>${"واْ◌ُ◌◌"}</bigArabic>. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.rmpp}</bigArabic>.`;
-                    break;
-                case 39:
-                    explanation += `<bigArabic>${"تْ◌َ◌◌"}</bigArabic>. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.rfsp}</bigArabic>.`;
-                    break;
-                case 40:
-                    explanation += `<bigArabic>${"تَا◌َ◌◌"}</bigArabic>. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.rfdp}</bigArabic>.`;
-                    break;
-                case 41:
-                    explanation += `<bigArabic>${"نَ◌ْ◌◌"}</bigArabic>. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.rfpp}</bigArabic>.`;
-                    break;
-            }
+            thus the past tense stem of <bigArabic>${workingVerb.printRoots()}</bigArabic> is <bigArabic>${workingVerb.pastTenseStem + workingVerb.roots[2]}</bigArabic>. 
+            The ${conjugationsNoBullets[workingTense]} form takes the suffix: <bigArabic>${patternDictionary.get(currentTense)}</bigArabic>. Thus the correct conjugation of the verb is <bigArabic>${workingVerb.verbDictionary.get(currentTense)}</bigArabic>.`;
         }
     }
 
-    explanation += "<br><br>"
-    document.getElementById("explanation").innerHTML = explanation
+
+    explanation += "<br><br>";
+    document.getElementById("explanation").innerHTML = explanation;
 }
 
 function gradeAnswer(userAnswer, correctAnswer){
@@ -434,22 +294,6 @@ function next(){
 
     document.getElementById("answer").style.display = "block";    
     document.getElementById("submitButton").style.display = "block";
-
-    // document.getElementById("test").innerHTML = 
-    // `I ${verb.ssp} / ${verb.ssi}<br>
-    // You (m, 1) ${verb.nmsp} / ${verb.nmsi}<br>
-    // You (f, 1) ${verb.nfsp} / ${verb.nfsi}<br>
-    // You (m, 2) ${verb.nmdp} / ${verb.nmdi}<br>
-    // You (f, 2) ${verb.nfdp} / ${verb.nfdi}<br>
-    // He ${verb.rmsp} / ${verb.rmsi}<br>
-    // She ${verb.rfsp} / ${verb.rfsi}<br>
-    // They (m, 2) ${verb.rmdp} / ${verb.rmdi}<br>
-    // They (f, 2) ${verb.rfdp} / ${verb.rfdi}<br>
-    // We ${verb.spp} / ${verb.spi}<br>
-    // You (m, 3+) ${verb.nmpp} / ${verb.nmpi}<br>
-    // You (f, 3+) ${verb.nfpp} / ${verb.nfpi}<br>
-    // They (m, 3+) ${verb.rmpp} / ${verb.rmpi}<br>
-    // They (f, 3+) ${verb.rfpp} / ${verb.rfpi}<br>`;
 }
 
 /** determines if the arabic or linguistic description of the pronoun should be displayed, and then writes it to the screen */

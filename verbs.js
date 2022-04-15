@@ -114,6 +114,38 @@ class Verb{
             this.rfdin = "لا " + this.rfdi;
             /** third person feminine plural present negative */
             this.rfpin = "لا " + this.rfpi;
+
+            this.verbDictionary = new Map([
+                [0, this.ssi],
+                [1, this.spi],
+                [2, this.nmsi],
+                [3, this.nmdi],
+                [4, this.nmpi],
+                [5, this.nfsi],
+                [6, this.nfdi],
+                [7, this.nfpi],
+                [8, this.rmsi],
+                [9, this.rmdi],
+                [10, this.rmpi],
+                [11, this.rfsi],
+                [12, this.rfdi],
+                [13, this.rfpi],
+
+                [28, this.ssp],
+                [29, this.spp],
+                [30, this.nmsp],
+                [31, this.nmdp],
+                [32, this.nmpp],
+                [33, this.nfsp],
+                [34, this.nfdp],
+                [35, this.nfpp],
+                [36, this.rmsp],
+                [37, this.rmdp],
+                [38, this.rmpp],
+                [39, this.rfsp],
+                [40, this.rfdp],
+                [41, this.rfpp],
+            ]);
         }
     }
 
