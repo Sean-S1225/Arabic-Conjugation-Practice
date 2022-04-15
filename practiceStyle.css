@@ -38,7 +38,7 @@ ul {
 
 bigArabic {
   font-size:30px;
-  font-family: 'Arial'
+  font-family: 'Arial';
 }
 
 #correct{
@@ -51,8 +51,6 @@ bigArabic {
 }
 
 .typeAnswer{
-  display: flex;
-  flex-flow: row;
   line-height: 500%;
   font-size: 30px;  
 }

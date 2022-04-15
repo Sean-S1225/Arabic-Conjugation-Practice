@@ -12,6 +12,8 @@ let parameters;
 let totalVerbPronoun;
 /** the number of questions the user has gotten correct in endless mode */
 let totalCorrect;
+/** either 0 or 1, determines if the pronoun displayed will be a linguistic description or the arabic pronoun. 0 is arabic, 1 is linguistic */
+let arabicLinguisticPronounRandom;
 
 window.onload = function(){
     totalCorrect = 0;
@@ -41,6 +43,14 @@ window.onload = function(){
     }
 
     totalVerbPronoun = verbPronounObject.length * verbPronounObject[0]["pronouns"].length;
+    
+    if(getParameter("pronounMode") == "desc"){
+        document.getElementById("arabicpronoun").remove();
+        spacers = document.getElementsByClassName("arabicPronounSpacer");
+        for(let i = 0; i < spacers.length; i++){
+            spacers[i].remove();
+        }
+    }
     
     //initializes the window for testing
     next();
@@ -174,7 +184,18 @@ function check(){
     document.getElementById("answer").style.display = "none";
     document.getElementById("submitButton").style.display = "none";
 
-    document.getElementById("arabicpronoun").innerHTML = "";
+    // document.getElementById("arabicpronoun").innerHTML = "";
+
+    let pronounStyle = getParameter("pronounMode");
+    switch(pronounStyle){
+        case "arabic":
+            displayArabicOrLinguisticPronoun();
+            break;
+        case "mixed":
+            displayArabicOrLinguisticPronoun();
+            break;
+    }
+
 }
 
 /** prints an explanation to screen as to why a verb conjugation is the way it is  */
@@ -324,6 +345,8 @@ function override(){
     if(verbPronounObject[currentVerb]["pronouns"].length == 0){
         verbPronounObject.splice(currentVerb, 1);
     }
+    totalCorrect++;
+    move();
     next();
 }
 
@@ -367,7 +390,9 @@ function next(){
     currentTense = tempNewTense;
 
     document.getElementById("prompt").innerHTML = "";
-    document.getElementById("arabicpronoun").innerHTML = "";
+    if(getParameter("pronounMode") == "arabic" || getParameter("pronounMode") == "mixed"){
+        document.getElementById("arabicpronoun").innerHTML = "";
+    }
 
     document.getElementById("answer").placeholder = verbPronounObject[currentVerb]["verb"].printRoots();
     let pronounStyle = getParameter("pronounMode");
@@ -389,17 +414,9 @@ function next(){
             document.getElementById("arabicpronoun").innerHTML = arabicPronouns[currentTense % 14];
             break;
         case "mixed":
-            if(Math.floor(Math.random() * 2) > 0){
-                document.getElementById("prompt").innerHTML = "Conjugate " + verbPronounObject[currentVerb]["verb"].printRoots() + " in the following tense:" + conjugations[currentTense];
-            }else{
-                document.getElementById("prompt").innerHTML = "Conjugate " + verbPronounObject[currentVerb]["verb"].printRoots() + " in the "
-                if(currentTense <= 13){
-                    document.getElementById("prompt").innerHTML += "present tense"
-                }else if(currentTense <= 41){
-                    document.getElementById("prompt").innerHTML += "past tense"
-                }
-                document.getElementById("arabicpronoun").innerHTML = arabicPronouns[currentTense % 14];
-            }
+            arabicLinguisticPronounRandom = Math.floor(Math.random() * 2);
+            console.log(arabicLinguisticPronounRandom)
+            displayArabicOrLinguisticPronoun();
             break;
     }
 
@@ -433,6 +450,25 @@ function next(){
     // You (f, 3+) ${verb.nfpp} / ${verb.nfpi}<br>
     // They (m, 3+) ${verb.rmpp} / ${verb.rmpi}<br>
     // They (f, 3+) ${verb.rfpp} / ${verb.rfpi}<br>`;
+}
+
+/** determines if the arabic or linguistic description of the pronoun should be displayed, and then writes it to the screen */
+function displayArabicOrLinguisticPronoun(){
+    if(arabicLinguisticPronounRandom > 0){
+        document.getElementById("prompt").innerHTML = "Conjugate " + verbPronounObject[currentVerb]["verb"].printRoots() + " in the following tense:" + conjugations[currentTense];
+        spacers = document.getElementsByClassName("arabicPronounSpacer");
+        for(let i = 0; i < spacers.length; i++){
+            spacers[i].style.display = "none";
+        }
+    }else{
+        document.getElementById("prompt").innerHTML = "Conjugate " + verbPronounObject[currentVerb]["verb"].printRoots() + " in the "
+        if(currentTense <= 13){
+            document.getElementById("prompt").innerHTML += "present tense"
+        }else if(currentTense <= 41){
+            document.getElementById("prompt").innerHTML += "past tense"
+        }
+        document.getElementById("arabicpronoun").innerHTML = arabicPronouns[currentTense % 14];
+    }
 }
 
 var i = 0;
